@@ -97,7 +97,7 @@ python c20p1305_cffi.py
 	ninja	
 	```
 2. Build the definition file from Windows PowerShell, within the c20p1305/build/src folder:
-**Note**: *Be sure to add lib.exe to your Windows path, otherwise this will fail.*
+**Note**: *If MSVC was installed be sure to add lib.exe to your Windows path, otherwise this will fail.*
 	```
 	lib.exe /MACHINE:x64 /def:libc20p1305deps.def
  	```
