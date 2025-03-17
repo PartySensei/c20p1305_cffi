@@ -106,5 +106,5 @@ python c20p1305_cffi.py
 	```
 	python c20p1305_cffi.py
  	```
-6. You should have a c20p1305.cpython-*your-py-version*-mscv.dll under `/your/path/c20p1305_cffi/build/src` and c20p1305.cpython-*your-py-version*.pyd under `/your/path/c20p1305_cffi/cffi`, copy both files to BitcoinArmory/armoryengine. 
+6. You should have a c20p1305.cpython-*your-py-version*-mscv.dll under `/c20p1305_cffi/build/src` and c20p1305.cpython-*your-py-version*.pyd under `/c20p1305_cffi/cffi`, copy both files to `/BitcoinArmory/armoryengine`. 
 	
