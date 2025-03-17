@@ -88,10 +88,11 @@ python c20p1305_cffi.py
 	./configure
 	make
 	```
-	Then browse to the c20p1305_cffi source and build the shim lib:
+	Then, clone [c20p1305_cffi](https://github.com/goatpig/c20p1305_cffi.git) and browse to the c20p1305 source to build the shim lib:
 	```
-	mkdir build
-	cd build
+	git clone https://github.com/goatpig/c20p1305_cffi
+	cd c20p1305_cffi
+	mkdir build & cd build
 	cmake -G Ninja ..
 	ninja	
 	```
