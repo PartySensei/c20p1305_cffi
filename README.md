@@ -1,8 +1,4 @@
-**
-
-## c20p1305_cffi
-
-**
+# c20p1305_cffi
 
 **About**
 
@@ -29,13 +25,13 @@ By default the build system looks for the dependencies in the parent folder:
 
 You can give it the absolute paths using `--libbtc-path` and `--armory-path`
 
-NOTE:
-- You will have to build libbtc prior to building this package.
-- You will first have to build a shim library (c20p1305_deps), which is then fed to CFFI to produce the python library. That final library has to be copied in the BitcoinArmory/armoryengine to complete the process.
-- There is no need to rebuild this package across different versions of BitcoinArmory, this code rarely if ever changes.
+ > [!Note]
+ > - You will have to build libbtc prior to building this package.
+ > - You will first have to build a shim library (c20p1305_deps), which is then fed to CFFI to produce the python library. That final library has to be copied in the BitcoinArmory/armoryengine to complete the process.
+ > - There is no need to rebuild this package across different versions of BitcoinArmory, this code rarely if ever changes.
 
-**Steps for building on Linux**
 
+## **Steps for building on Linux**
 
 You will need the following tools installed:
 - cmake
@@ -43,13 +39,11 @@ You will need the following tools installed:
 - python3 with cffi
 
 1. From the libbtc folder, build it with -fPIC:
-
 ```
 	sh autogen.sh
     CFLAGS="-fPIC -g" ./configure
     make
 ```
-
 2. From the c20p1305_cffi folder, build the shim library:
 ```
    mkdir build
@@ -63,13 +57,17 @@ python c20p1305_cffi.py
 ```
 4. You should now have a file named c20p1305-cpython-*your-py-version*-linux-gnu.so, which you can copy to BitcoinArmory/engine
 
-**Steps for building on Windows**
 
-NOTE: The Python runtime is .py script compiler and interpreter written in C. It can only make use of C code (bound via CFFI) that was built with the same compiler. On Windows, Python is built with the official Microsoft compiler, MSVC. However, the cryptographic libraries used in this project do not build on MSVC.
-The solution is to first build a shim static library with all the useful code via MSYS2, then build a definition build file for it that MSVC can read from to generate the CFFI library.
+## **Steps for building on Windows**
 
+ > [!NOTE]
+ > The Python runtime is .py script compiler and interpreter written in C. It can only make use of C code (bound via CFFI) that was built with the same compiler. On Windows, Python is built with the official Microsoft compiler, MSVC. However, the   cryptographic libraries used in this project do not build on MSVC.
+ The solution is to first build a shim static library with all the useful code via MSYS2, then build a definition build file for it that MSVC can read from to generate the CFFI library.
+
+**Pre-requisites**
 - MSVC: 
 	We need the native Windows C/C++ toolset. Grab MSCV Community here: https://visualstudio.microsoft.com/downloads/
+
 - MSYS2: 
 	We build libbtc and the shim library via msys2: https://www.msys2.org/
 	We exclusively use the MINGW64 environment. Make sure you have the following packages installed before progressing further:
@@ -80,29 +78,32 @@ The solution is to first build a shim static library with all the useful code vi
 - Python3:
 	You need to setup python3 on your Windows machine and install cffi (consider using a venv and pip)
 	
-1. Building the shim library
-	From the MSYS2 MINGW64 prompt, browse to the libbtc source and build it:
+**Building** 
+
+1. Building the shim library from the MSYS2 MINGW64 prompt, browse to the libbtc source and build it:
 	```
+	git clone https://github.com/libbtc/libbtc.git
+	cd libbtc
 	sh autogen.sh
 	./configure
 	make
 	```
-	Then browse to the c20p1305 source and build the shim lib:
+	Then browse to the c20p1305_cffi source and build the shim lib:
 	```
 	mkdir build
 	cd build
-	cmake ..
+	cmake -G Ninja ..
 	ninja	
 	```
-2. Build the definition file
-	From Windows PowerShell, within the c20p1305/build/src folder:
+2. Build the definition file from Windows PowerShell, within the c20p1305/build/src folder:
+**Note**: *Be sure to add lib.exe to your Windows path, otherwise this will fail.*
 	```
-	lib.exe /MACHINE:x64 /def:c20p1305_deps.def
+	lib.exe /MACHINE:x64 /def:libc20p1305deps.def
  	```
 4. Build the CFFI package
 	Still from Windows PowerShell, within the c20p1305/cffi folder:
 	```
 	python c20p1305_cffi.py
  	```
-6. You should have a c20p1305.cpython-*your-py-version*-mscv.dll, copy it to BitcoinArmory/armoryengine
+6. You should have a c20p1305.cpython-*your-py-version*-mscv.dll under `/your/path/c20p1305_cffi/build/src` and c20p1305.cpython-*your-py-version*.pyd under `/your/path/c20p1305_cffi/cffi`, copy both files to BitcoinArmory/armoryengine. 
 	
